@@ -20,7 +20,7 @@ namespace RealFizzBuzz.Tests.Pipes
         {
             var pipe = new CompositePipe(new TruePipe(), new TruePipe(), new TruePipe());
 
-            for (int i = 0; i < int.MaxValue; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Assert.True(pipe.Check(i));
             }
@@ -29,9 +29,9 @@ namespace RealFizzBuzz.Tests.Pipes
         [Fact]
         public void False_only_pipes_returns_false_on_check()
         {
-            var pipe = new CompositePipe(new TruePipe(), new TruePipe(), new TruePipe());
+            var pipe = new CompositePipe(new FalsePipe(), new FalsePipe(), new FalsePipe());
 
-            for (int i = 0; i < int.MaxValue; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Assert.False(pipe.Check(i));
             }
@@ -42,7 +42,7 @@ namespace RealFizzBuzz.Tests.Pipes
         {
             var pipe = new CompositePipe(new TruePipe(), new FalsePipe(), new TruePipe());
 
-            for (int i = 0; i < int.MaxValue; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Assert.False(pipe.Check(i));
             }
@@ -52,7 +52,7 @@ namespace RealFizzBuzz.Tests.Pipes
         [MemberData(nameof(ConcatPipes))]
         public void Pipe_returns_concatenation_of_composed_pipes(IPipe[] pipes, string expected)
         {
-            var pipe = new CompositePipe(new TruePipe(), new FalsePipe());
+            var pipe = new CompositePipe(pipes);
             Assert.Equal(expected, pipe.Process(0));
         }
 
