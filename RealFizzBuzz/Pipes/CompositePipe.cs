@@ -19,14 +19,8 @@ namespace RealFizzBuzz.Pipes
             this.pipes = pipes;
         }
 
-        public bool Check(int number)
-        {
-            return pipes.All(p => p.Check(number));
-        }
+        public bool Check(int number) => pipes.All(p => p.Check(number));
 
-        public string Process(int number)
-        {
-            return pipes.Select(p => p.Process(number)).Aggregate((s1, s2) => s1 + s2);
-        }
+        public string Process(int number) => pipes.Select(p => p.Process(number)).Aggregate((s1, s2) => s1 + s2);
     }
 }
