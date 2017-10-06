@@ -4,8 +4,13 @@ using System.Text;
 
 namespace RealFizzBuzz.Pipes
 {
-    public class FizzPipe : IPipe
+    public class NumberSubstitutePipe : IPipe
     {
+        public NumberSubstitutePipe(int target, string substitute)
+        {
+
+        }
+
         public bool Check(int number)
         {
             throw new NotImplementedException();
