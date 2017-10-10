@@ -11,6 +11,29 @@ namespace RealFizzBuzz.Tests
     public class RunnerTests
     {
         [Fact]
+        public void Runner_returns_correct_fizzbuzz_result()
+        {
+            var fizz = new NumberSubstitutePipe(3, "fizz");
+            var buzz = new NumberSubstitutePipe(5, "buzz");
+            var fizzbuzz = new CompositePipe(fizz, buzz);
+            var defaultPipe = new DefaultNumberPipe();
+
+            List<IPipe> pipes = new List<IPipe>()
+            {
+                fizzbuzz,
+                fizz,
+                buzz,
+                defaultPipe
+            };
+
+            var runner = new Runner(Enumerable.Range(1, 15), pipes);
+            IList<string> actual = runner.Run().ToList();
+            IList<string> expected = FizzBuzz.ToList();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void No_pipes_supplied_throws_exception()
         {
             Assert.Throws<ArgumentException>(() => new Runner(Enumerable.Empty<int>(), new List<IPipe>()));
@@ -49,6 +72,11 @@ namespace RealFizzBuzz.Tests
                 new List<IPipe>() { new NumberSubstitutePipe(1, "ONE"), new TruePipe() },
                 "ONE"
             }
+        };
+
+        public static IEnumerable<string> FizzBuzz = new string[]
+        {
+            "1", "2", "fizz", "4", "buzz", "fizz", "7", "8", "fizz", "buzz", "11", "fizz", "13", "14", "fizzbuzz"
         };
     }
 }
