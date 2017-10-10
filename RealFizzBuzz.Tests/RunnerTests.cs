@@ -10,14 +10,24 @@ namespace RealFizzBuzz.Tests
 {
     public class RunnerTests
     {
+        private readonly IPipe lucky;
+        private readonly IPipe fizz;
+        private readonly IPipe buzz;
+        private readonly IPipe fizzbuzz;
+        private readonly IPipe defaultPipe;
+
+        public RunnerTests()
+        {
+            lucky = new ContainsPipe(3, "lucky");
+            fizz = new NumberSubstitutePipe(3, "fizz");
+            buzz = new NumberSubstitutePipe(5, "buzz");
+            fizzbuzz = new CompositePipe(fizz, buzz);
+            defaultPipe = new DefaultNumberPipe();
+        }
+
         [Fact]
         public void Runner_returns_correct_fizzbuzz_result()
         {
-            var fizz = new NumberSubstitutePipe(3, "fizz");
-            var buzz = new NumberSubstitutePipe(5, "buzz");
-            var fizzbuzz = new CompositePipe(fizz, buzz);
-            var defaultPipe = new DefaultNumberPipe();
-
             List<IPipe> pipes = new List<IPipe>()
             {
                 fizzbuzz,
@@ -36,12 +46,6 @@ namespace RealFizzBuzz.Tests
         [Fact]
         public void Runner_returns_correct_fizzbuzzlucky_result()
         {
-            var lucky = new ContainsPipe(3, "lucky");
-            var fizz = new NumberSubstitutePipe(3, "fizz");
-            var buzz = new NumberSubstitutePipe(5, "buzz");
-            var fizzbuzz = new CompositePipe(fizz, buzz);
-            var defaultPipe = new DefaultNumberPipe();
-
             List<IPipe> pipes = new List<IPipe>()
             {
                 lucky,
@@ -56,6 +60,36 @@ namespace RealFizzBuzz.Tests
             IList<string> expected = FizzBuzzLucky.ToList();
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Report_for_fizzbuzzlucky_gives_correct_result()
+        {
+            List<IPipe> pipes = new List<IPipe>()
+            {
+                lucky,
+                fizzbuzz,
+                fizz,
+                buzz,
+                defaultPipe
+            };
+
+            var runner = new Runner(Enumerable.Range(1, 15), pipes);
+            foreach (var item in runner.Run())
+            {
+                // Exhaust the source.
+            }
+
+            IDictionary<string, int> expected = new Dictionary<string, int>()
+            {
+                ["lucky"] = 2,
+                ["fizz"] = 3,
+                ["buzz"] = 2,
+                ["fizzbuzz"] = 1,
+                ["integer"] = 7
+            };
+
+            Assert.Equal(expected, runner.Report);
         }
 
         [Fact]
