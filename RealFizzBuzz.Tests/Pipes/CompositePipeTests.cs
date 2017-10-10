@@ -63,17 +63,5 @@ namespace RealFizzBuzz.Tests.Pipes
             new object[]{ new IPipe[] { new FalsePipe(), new FalsePipe() }, "falsefalse" },
             new object[]{ new IPipe[] { new TruePipe(), new TruePipe() }, "truetrue" }
         };
-
-        class TruePipe : IPipe
-        {
-            public bool Check(int number) => true;
-            public string Process(int number) => "true";
-        }
-
-        class FalsePipe : IPipe
-        {
-            public bool Check(int number) => false;
-            public string Process(int number) => "false";
-        }
     }
 }
