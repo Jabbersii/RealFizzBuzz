@@ -9,6 +9,7 @@ namespace RealFizzBuzz
     {
         static void Main(string[] args)
         {
+            var lucky = new ContainsPipe(3, "lucky");
             var fizz = new NumberSubstitutePipe(3, "fizz");
             var buzz = new NumberSubstitutePipe(5, "buzz");
             var fizzbuzz = new CompositePipe(fizz, buzz);
@@ -16,6 +17,7 @@ namespace RealFizzBuzz
 
             List<IPipe> pipes = new List<IPipe>()
             {
+                lucky,
                 fizzbuzz,
                 fizz,
                 buzz,
