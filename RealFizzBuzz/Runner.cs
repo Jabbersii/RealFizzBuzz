@@ -10,6 +10,7 @@ namespace RealFizzBuzz
     {
         private readonly IEnumerable<int> source;
         private readonly IList<IPipe> pipes;
+        private readonly IDictionary<string, int> report = new Dictionary<string, int>();
 
         public Runner(IEnumerable<int> source, IList<IPipe> pipes)
         {
@@ -20,14 +21,39 @@ namespace RealFizzBuzz
 
             this.source = source;
             this.pipes = pipes;
+            report.Add("integer", 0);
         }
+
+        public IDictionary<string, int> Report => report;
 
         public IEnumerable<string> Run()
         {
             foreach (var item in source)
             {
                 var pipe = pipes.First(p => p.Check(item));
-                yield return pipe.Process(item);
+                string result = pipe.Process(item);
+                ReportResult(result);
+
+                yield return result;
+            }
+        }
+
+        private void ReportResult(string print)
+        {
+            if (int.TryParse(print, out int a))
+            {
+                report["integer"] += 1;
+            }
+            else
+            {
+                if (report.ContainsKey(print))
+                {
+                    report[print] += 1;
+                }
+                else
+                {
+                    report.Add(print, 1);
+                }
             }
         }
     }
